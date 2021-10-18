@@ -23,7 +23,7 @@ namespace ReadWriteLockDemo.FileUtilities
 
 namespace ReadWriteLockDemo.FileUtilities
 {
-    public class MonitorLockFileService : IFileService
+    public class ReadWriteLockFileService : IFileService
     {
         // code here...
     }
