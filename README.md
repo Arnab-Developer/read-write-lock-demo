@@ -20,7 +20,9 @@ namespace ReadWriteLockDemo.FileUtilities
         // code here...
     }
 }
+```
 
+```c#
 namespace ReadWriteLockDemo.FileUtilities
 {
     public class ReadWriteLockFileService : IFileService
