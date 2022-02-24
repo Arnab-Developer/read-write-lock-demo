@@ -1,57 +1,52 @@
-﻿using System;
-using System.IO;
-using System.Threading;
+﻿namespace ReadWriteLockDemo.FileUtilities;
 
-namespace ReadWriteLockDemo.FileUtilities
+public class ReadWriteLockFileService : IFileService
 {
-    public class ReadWriteLockFileService : IFileService
+    private static readonly ReaderWriterLock _readerWriterLock;
+    private readonly string _filePath;
+
+    static ReadWriteLockFileService()
     {
-        private static readonly ReaderWriterLock _readerWriterLock;
-        private readonly string _filePath;
+        _readerWriterLock = new ReaderWriterLock();
+    }
 
-        static ReadWriteLockFileService()
+    public ReadWriteLockFileService(string filePath)
+    {
+        _filePath = filePath;
+    }
+
+    string IFileService.FilePath => _filePath;
+
+    string IFileService.Read()
+    {
+        _readerWriterLock.AcquireReaderLock(TimeSpan.FromMinutes(1));
+        try
         {
-            _readerWriterLock = new ReaderWriterLock();
+            Thread.Sleep(500);
+            return File.ReadAllText(_filePath);
         }
-
-        public ReadWriteLockFileService(string filePath)
+        finally
         {
-            _filePath = filePath;
-        }
-
-        string IFileService.FilePath => _filePath;
-
-        string IFileService.Read()
-        {
-            _readerWriterLock.AcquireReaderLock(TimeSpan.FromMinutes(1));
-            try
+            if (_readerWriterLock.IsReaderLockHeld)
             {
-                Thread.Sleep(500);
-                return File.ReadAllText(_filePath);
-            }
-            finally
-            {
-                if (_readerWriterLock.IsReaderLockHeld)
-                {
-                    _readerWriterLock.ReleaseReaderLock();
-                }
+                _readerWriterLock.ReleaseReaderLock();
             }
         }
+    }
 
-        void IFileService.Write(string content)
+    void IFileService.Write(string content)
+    {
+        _readerWriterLock.AcquireWriterLock(TimeSpan.FromMinutes(1));
+        try
         {
-            _readerWriterLock.AcquireWriterLock(TimeSpan.FromMinutes(1));
-            try
+            Thread.Sleep(500);
+            File.WriteAllText(_filePath, content);
+        }
+        finally
+        {
+            if (_readerWriterLock.IsWriterLockHeld)
             {
-                Thread.Sleep(500);
-                File.WriteAllText(_filePath, content);
-            }
-            finally
-            {
-                if (_readerWriterLock.IsWriterLockHeld)
-                {
-                    _readerWriterLock.ReleaseWriterLock();
-                }
+                _readerWriterLock.ReleaseWriterLock();
             }
         }
     }

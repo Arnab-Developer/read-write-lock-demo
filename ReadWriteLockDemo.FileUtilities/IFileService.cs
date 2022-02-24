@@ -1,11 +1,10 @@
-﻿namespace ReadWriteLockDemo.FileUtilities
+﻿namespace ReadWriteLockDemo.FileUtilities;
+
+public interface IFileService
 {
-    public interface IFileService
-    {
-        string FilePath { get; }
+    string FilePath { get; }
 
-        string Read();
+    string Read();
 
-        void Write(string content);
-    }
+    void Write(string content);
 }
