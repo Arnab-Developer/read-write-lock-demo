@@ -1,56 +1,52 @@
-﻿using System.IO;
-using System.Threading;
+﻿namespace ReadWriteLockDemo.FileUtilities;
 
-namespace ReadWriteLockDemo.FileUtilities
+public class MonitorLockFileService : IFileService
 {
-    public class MonitorLockFileService : IFileService
+    private static readonly object _syncRoot;
+    private readonly string _filePath;
+
+    static MonitorLockFileService()
     {
-        private static readonly object _syncRoot;
-        private readonly string _filePath;
+        _syncRoot = new object();
+    }
 
-        static MonitorLockFileService()
+    public MonitorLockFileService(string filePath)
+    {
+        _filePath = filePath;
+    }
+
+    string IFileService.FilePath => _filePath;
+
+    string IFileService.Read()
+    {
+        Monitor.Enter(_syncRoot);
+        try
         {
-            _syncRoot = new object();
+            Thread.Sleep(500);
+            return File.ReadAllText(_filePath);
         }
-
-        public MonitorLockFileService(string filePath)
+        finally
         {
-            _filePath = filePath;
-        }
-
-        string IFileService.FilePath => _filePath;
-
-        string IFileService.Read()
-        {
-            Monitor.Enter(_syncRoot);
-            try
+            if (Monitor.IsEntered(_syncRoot))
             {
-                Thread.Sleep(500);
-                return File.ReadAllText(_filePath);
-            }
-            finally
-            {
-                if (Monitor.IsEntered(_syncRoot))
-                {
-                    Monitor.Exit(_syncRoot);
-                }
+                Monitor.Exit(_syncRoot);
             }
         }
+    }
 
-        void IFileService.Write(string content)
+    void IFileService.Write(string content)
+    {
+        Monitor.Enter(_syncRoot);
+        try
         {
-            Monitor.Enter(_syncRoot);
-            try
+            Thread.Sleep(500);
+            File.WriteAllText(_filePath, content);
+        }
+        finally
+        {
+            if (Monitor.IsEntered(_syncRoot))
             {
-                Thread.Sleep(500);
-                File.WriteAllText(_filePath, content);
-            }
-            finally
-            {
-                if (Monitor.IsEntered(_syncRoot))
-                {
-                    Monitor.Exit(_syncRoot);
-                }
+                Monitor.Exit(_syncRoot);
             }
         }
     }
