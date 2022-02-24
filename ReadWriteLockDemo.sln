@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30717.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadWriteLockDemo.FileUtilities", "ReadWriteLockDemo.FileUtilities\ReadWriteLockDemo.FileUtilities.csproj", "{C70491F0-0B87-4D51-ABDF-44D326760D53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadWriteLockDemo.FileUtilities", "ReadWriteLockDemo.FileUtilities\ReadWriteLockDemo.FileUtilities.csproj", "{C70491F0-0B87-4D51-ABDF-44D326760D53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadWriteLockDemo.FileUtilitiesTests", "ReadWriteLockDemo.FileUtilitiesTests\ReadWriteLockDemo.FileUtilitiesTests.csproj", "{B358B748-10F5-4F19-956D-FD88CB4E8EC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReadWriteLockDemo.FileUtilitiesTests", "ReadWriteLockDemo.FileUtilitiesTests\ReadWriteLockDemo.FileUtilitiesTests.csproj", "{B358B748-10F5-4F19-956D-FD88CB4E8EC3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BCF70457-7B68-401D-9127-BA7FBD040608}"
+	ProjectSection(SolutionItems) = preProject
+		nuget.config = nuget.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,7 +9,7 @@ public class FileServiceTests
 
     public FileServiceTests()
     {
-        _filePath = @"C:\repos\t.txt";
+        _filePath = "<put your text file path here>";
     }
 
     [Fact]
